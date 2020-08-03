@@ -16,7 +16,17 @@ class ClientesTest extends TestCase
     public function test_create_cliente(){
         $this->withoutExceptionHandling();
 
-        $this->post('/api/clientes', ['nome' => 'Fulano']);
-        $this->assertCount(1, Cliente::all());
+        $clienteData = [
+            'nome' => 'Fulano',
+            'email' => 'fulano@cicrano.com',
+            'telefone' => '84988887777',
+            'endereco' => 'Avenida das Ruas, 85. Bairro: Barro Azul'
+        ];
+        $this->post('/api/clientes', $clienteData);
+        $cliente = Cliente::first();
+
+        foreach($clienteData as $key => $value){
+            $this->assertEquals($clienteData[$key], $cliente[$key]);
+        }
     }
 }
