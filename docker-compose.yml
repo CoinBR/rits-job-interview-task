@@ -7,6 +7,6 @@ services:
     working_dir: /var/www/
     volumes:
       - ./laravel/:/var/www
-    command: bash -c "composer install && php artisan serve --host=0.0.0.0 --port=8005"
+    command: bash -c "composer install && php artisan storage:link && php artisan serve --host=0.0.0.0 --port=8005"
     ports:
       - 8005:8005
