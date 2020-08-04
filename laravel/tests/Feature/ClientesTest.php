@@ -29,4 +29,21 @@ class ClientesTest extends TestCase
             $this->assertEquals($clienteData[$key], $cliente[$key]);
         }
     }
+
+    public function test_require_nome(){
+        $clienteData = [
+            'nome' => 'Fulano',
+            'email' => 'fulano@cicrano.com',
+            'telefone' => '84988887777',
+            'endereco' => 'Avenida das Ruas, 85. Bairro: Barro Azul'
+        ];
+
+        foreach ($clienteData as $k => $v){
+            $incompleteData = $clienteData;
+            unset($incompleteData[$k]);
+            $this->post('/api/clientes', $incompleteData)->assertSessionHasErrors($k);
+        }
+
+        $this->assertCount(0, Cliente::all());
+    }
 }

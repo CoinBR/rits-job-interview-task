@@ -9,12 +9,13 @@ use App\Cliente;
 
 class ClientesController extends Controller
 {
-    public function store(Request $request){
-        Cliente::create([
-                'nome' => $request['nome'],
-                'email' => $request['email'],
-                'telefone' => $request['telefone'],
-                'endereco' => $request['endereco'],
-        ]); 
+    public function store(){
+        $data = request()->validate([
+            'nome' => 'required',
+            'email' => 'required',
+            'telefone' => 'required',
+            'endereco' => 'required',
+        ]);
+        Cliente::create($data); 
     }
 }
