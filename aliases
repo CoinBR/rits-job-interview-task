@@ -2,4 +2,5 @@
 alias dr="docker-compose run laravel"
 alias php="dr php"
 alias artisan="php artisan"
-alias tst='artisan test'
+alias __do__test="artisan test"
+alias tst="artisan config:cache && alias tst=__do__test && __do__test"
