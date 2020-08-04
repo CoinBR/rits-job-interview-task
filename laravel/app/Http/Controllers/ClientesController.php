@@ -12,7 +12,7 @@ class ClientesController extends Controller
     public function store(){
         $data = request()->validate([
             'nome' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'telefone' => 'required',
             'endereco' => 'required',
         ]);

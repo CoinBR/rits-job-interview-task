@@ -44,4 +44,10 @@ class ClientesTest extends TestCase
         }
         $this->assertCount(0, Cliente::all());
     }
+    
+    public function test_valid_email(){
+        $wrongData = array_merge($this->data(), ['email' => 'I dont have an email']);
+        $this->post('/api/clientes', $wrongData)->assertSessionHasErrors('email');
+    }
+
 }
