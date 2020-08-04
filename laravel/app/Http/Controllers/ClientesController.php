@@ -9,27 +9,35 @@ use App\Cliente;
 
 class ClientesController extends Controller
 {
-    private function getValidatedData($fields){
-        0 / 0;
-        dd(request());
-        dd('123');
-        dd($fields);
+    private function getValidatedData($fields='all'){
         $validationRules = [
             'nome' => 'required',
             'email' => 'unique:clientes|required|email',
             'telefone' => 'unique:clientes|required|digits_between:10,11',
             'endereco' => 'required',
-        ]);
-        if (!isset($fields)){
-            dd('123');
+        ];
+
+        if ($fields == 'all'){
             return request()->validate($validationRules);
+        } elseif ($fields == 'requested' || $fields == 'request' || $fields == 'inRequest'){
+            return $this->getValidatedData($this->getRequestFieldsNames());
         } else{
-            return array_filter($validationRules, function ($key){
-                return in_array($key, $fields); 
-            });
+            $data = [];
+            foreach ($validationRules as $key => $value){
+                if (in_array($key, $fields)){
+                    array_push([ $key => $value]);
+                }
+            }
         }
-
-
+        
+    }
+    
+    private function getRequestFieldsNames(){
+        $fields = [];
+        foreach(request()->all() as $fieldName => $value){
+            array_push($fields, $fieldName);
+        }
+        return $fields;
     }
     
     public function store(){
@@ -42,7 +50,7 @@ class ClientesController extends Controller
     }
 
     public function update(Cliente $cliente){
-        $cliente->update($this->getValidatedData(request()->all));
+        $cliente->update($this->getValidatedData('requested'));
         return $cliente;
     }
 
