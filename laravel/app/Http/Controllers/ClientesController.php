@@ -12,8 +12,8 @@ class ClientesController extends Controller
     public function store(){
         $data = request()->validate([
             'nome' => 'required',
-            'email' => 'required|email',
-            'telefone' => 'required',
+            'email' => 'unique:clientes|required|email',
+            'telefone' => 'unique:clientes|required',
             'endereco' => 'required',
         ]);
         Cliente::create($data); 

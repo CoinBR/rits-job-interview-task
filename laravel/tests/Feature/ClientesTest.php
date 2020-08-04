@@ -23,6 +23,15 @@ class ClientesTest extends TestCase
         ];
     }
 
+    function data2(){
+        return [
+            'nome' => 'Jesse Pinkman',
+            'email' => 'pinkman@waner.tv',
+            'telefone' => '84988003311',
+            'endereco' => 'Rua das Estrelas, 77. Bairro: Ponta Parda'
+        ];
+    }
+
     public function test_create_cliente(){
         $this->withoutExceptionHandling();
 
@@ -50,4 +59,17 @@ class ClientesTest extends TestCase
         $this->post('/api/clientes', $wrongData)->assertSessionHasErrors('email');
     }
 
+    public function test_unique_fields(){
+        $uniqueFields = ['email', 'telefone'];
+
+        $legit = $this->data();
+        $this->post('api/clientes', $legit);
+
+        foreach ($uniqueFields as $key => $field){
+            $clone = array_merge($this->data2(), [ $field => $legit[$field] ]);
+            $this->post('api/clientes', $clone)->assertSessionHasErrors($field);
+        }
+
+        $this->assertCount(1, Cliente::all());
+    }
 }
