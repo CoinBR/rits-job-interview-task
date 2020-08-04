@@ -16,6 +16,11 @@ class ClientesController extends Controller
             'telefone' => 'unique:clientes|required',
             'endereco' => 'required',
         ]);
-        Cliente::create($data); 
+        $newObj = Cliente::create($data); 
+        return $newObj;
+    }
+
+    public function show(Cliente $cliente){
+        return $cliente;
     }
 }

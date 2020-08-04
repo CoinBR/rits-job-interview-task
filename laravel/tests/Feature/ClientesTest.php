@@ -72,4 +72,16 @@ class ClientesTest extends TestCase
 
         $this->assertCount(1, Cliente::all());
     }
+
+    public function test_get_cliente(){
+        $objsData = [$this->data(), $this->data2()];
+    
+        foreach($objsData as $k => $objData){
+            $this->post('api/clientes', $objData);
+        }
+        foreach($objsData as $k => $objData){
+            $response = $this->get('api/clientes/' . ($k + 1));
+            $response->assertJson($objData);
+        }
+    }
 }
