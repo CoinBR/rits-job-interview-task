@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Tests\TestCase;
 
 use App\Cliente;
@@ -13,6 +14,10 @@ class ClientesTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp():void{
+        parent::setUp();
+        $this->withoutMiddleware(ThrottleRequests::class);
+    }
 
     // Entity data and configs. Must be changed for each Entity
 
