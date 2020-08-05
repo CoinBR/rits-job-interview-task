@@ -18,7 +18,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+$apiCRUDs = [
+    'clientes', 
+    'produtos',
+];
+
 Route::post('/clientes', 'ClientesController@store');
 Route::get('/clientes/{cliente}', 'ClientesController@show');
 Route::patch('/clientes/{cliente}', 'ClientesController@update');
 Route::delete('/clientes/{cliente}', 'ClientesController@destroy');
+
+Route::post('/produtos', 'ProdutosController@store');
+Route::get('/produtos/{produto}', 'ProdutosController@show');
+Route::patch('/produtos/{produto}', 'ProdutosController@update');
+Route::delete('/produtos/{produto}', 'ProdutosController@destroy');
