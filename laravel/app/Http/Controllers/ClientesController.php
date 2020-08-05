@@ -9,18 +9,26 @@ use App\Cliente;
 
 class ClientesController extends Controller
 {
-    public function store(){
-        $data = request()->validate([
+    private function getValidatedData(){
+        return request()->validate([
             'nome' => 'required',
             'email' => 'unique:clientes|required|email',
             'telefone' => 'unique:clientes|required',
             'endereco' => 'required',
         ]);
-        $newObj = Cliente::create($data); 
-        return $newObj;
+    }
+    
+    public function store(){
+       $newObj = Cliente::create($this->getValidatedData()); 
+       return $newObj;
     }
 
     public function show(Cliente $cliente){
+        return $cliente;
+    }
+
+    public function update(Cliente $cliente){
+        $cliente->update($this->getValidatedData());
         return $cliente;
     }
 }

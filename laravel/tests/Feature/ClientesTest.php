@@ -84,4 +84,19 @@ class ClientesTest extends TestCase
             $response->assertJson($objData);
         }
     }
+
+    public function test_patch_cliente(){
+        $this->withoutExceptionHandling();
+
+        $this->post('api/clientes', $this->data());
+
+        $responsePatch = $this->patch('api/clientes/1', $this->data2());
+        $responseGet = $this->get('api/clientes/1');
+        $expected = array_merge(['id' => 1], $this->data2());
+
+        $responsePatch->assertJson($expected);
+        $responseGet->assertJson($expected);
+        $this->assertCount(1, Cliente::all());
+    }
+    
 }
