@@ -31,4 +31,8 @@ class ClientesController extends Controller
         $cliente->update($this->getValidatedData());
         return $cliente;
     }
+
+    public function destroy(Cliente $cliente){
+        $cliente->delete();
+    }
 }

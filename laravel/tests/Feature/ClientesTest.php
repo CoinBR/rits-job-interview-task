@@ -99,4 +99,22 @@ class ClientesTest extends TestCase
         $this->assertCount(1, Cliente::all());
     }
     
+    public function test_delete_cliente(){
+        $this->post('api/clientes', $this->data());
+        $this->assertCount(1, Cliente::all());
+
+        $this->delete('api/clientes/1');
+        $this->assertCount(0, Cliente::all());
+       
+        $this->post('api/clientes', $this->data());
+        $this->post('api/clientes', $this->data2());
+        $this->assertCount(2, Cliente::all());
+
+        $this->delete('api/clientes/2');
+        $this->assertCount(1, Cliente::all());
+
+        $this->delete('api/clientes/3');
+        $this->assertCount(0, Cliente::all());
+    }
+    
 }
