@@ -26,6 +26,7 @@ class ClientesController extends Controller
             foreach ($validationRules as $key => $value){
                 if (in_array($key, $fields)){
                     array_push([ $key => $value]);
+                    'make sure'
                 }
             }
         }
