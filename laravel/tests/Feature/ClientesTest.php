@@ -14,6 +14,8 @@ class ClientesTest extends TestCase
     use RefreshDatabase;
 
 
+    // Entity data and configs. Must be changed for each Entity
+
     private function data(){
         return [
             'nome' => 'Fulano',
@@ -34,6 +36,49 @@ class ClientesTest extends TestCase
 
     private function getBaseEndpoint(){
         return '/api/clientes';
+    }
+
+    private function getUniqueFields(){
+        return ['email', 'telefone'];
+    }
+
+
+    // Tests focused on this specific Entity
+    
+
+    public function test_valid_email(){
+        $wrongData = array_merge($this->data(), ['email' => 'I dont have an email']);
+        $this->post($this->getBaseEndpoint(), $wrongData)->assertSessionHasErrors('email');
+    }
+    public function test_valid_telefone(){
+        $field = 'telefone';
+        $wrongs = ['988884444', '(84) 9 8888 4444', '84x88884444', '084988885555', '33334444'];
+        $corrects = ['84955554444', 84988884444, '8433334444', 8533334444];
+
+        $this->post($this->getBaseEndpoint(), $this->data());
+
+        foreach($wrongs as $value){
+            $this->patch($this->getBaseEndpoint() . '/1', [$field => $value])->assertSessionHasErrors($field);
+        }
+
+        foreach($corrects as $value){
+            $res = $this->patch($this->getBaseEndpoint() . '/1', [$field => $value]);
+            $response = $this->get($this->getBaseEndpoint() . '/1');
+            $this->assertEquals($response[$field], $value);
+        }
+    }
+
+    // Tests common to most CRUD entities
+
+    public function test_unique_fields(){
+        $legit = $this->data();
+        $this->post($this->getBaseEndpoint(), $legit);
+
+        foreach ($this->getUniqueFields() as $key => $field){
+            $clone = array_merge($this->data2(), [ $field => $legit[$field] ]);
+            $this->post($this->getBaseEndpoint(), $clone)->assertSessionHasErrors($field);
+        }
+        $this->assertCount(1, Cliente::all());
     }
 
     public function test_create_cliente(){
@@ -57,25 +102,6 @@ class ClientesTest extends TestCase
         }
         $this->assertCount(0, Cliente::all());
     }
-    
-    public function test_valid_email(){
-        $wrongData = array_merge($this->data(), ['email' => 'I dont have an email']);
-        $this->post($this->getBaseEndpoint(), $wrongData)->assertSessionHasErrors('email');
-    }
-
-    public function test_unique_fields(){
-        $uniqueFields = ['email', 'telefone'];
-
-        $legit = $this->data();
-        $this->post($this->getBaseEndpoint(), $legit);
-
-        foreach ($uniqueFields as $key => $field){
-            $clone = array_merge($this->data2(), [ $field => $legit[$field] ]);
-            $this->post($this->getBaseEndpoint(), $clone)->assertSessionHasErrors($field);
-        }
-
-        $this->assertCount(1, Cliente::all());
-    }
 
     public function test_get_cliente(){
         $objsData = [$this->data(), $this->data2()];
@@ -94,9 +120,11 @@ class ClientesTest extends TestCase
 
         $this->post($this->getBaseEndpoint(), $this->data());
 
-        $responsePatch = $this->patch($this->getBaseEndpoint() . '/1', $this->data2());
+        $tmp = $this->data2();
+        array_pop($tmp);
+        $responsePatch = $this->patch($this->getBaseEndpoint() . '/1', $tmp);
         $responseGet = $this->get($this->getBaseEndpoint() . '/1');
-        $expected = array_merge(['id' => 1], $this->data2());
+        $expected = array_merge(['id' => 1], $this->data2(), ['endereco' => $this->data()['endereco']]);
 
         $responsePatch->assertJson($expected);
         $responseGet->assertJson($expected);

@@ -9,13 +9,36 @@ use App\Cliente;
 
 class ClientesController extends Controller
 {
-    private function getValidatedData(){
-        return request()->validate([
+    private function getValidatedData($fields='all'){
+        $validationRules = [
             'nome' => 'required',
             'email' => 'unique:clientes|required|email',
-            'telefone' => 'unique:clientes|required',
+            'telefone' => 'unique:clientes|required|digits_between:10,11',
             'endereco' => 'required',
-        ]);
+        ];
+
+        if ($fields == 'all'){
+            return request()->validate($validationRules);
+        } elseif ($fields == 'requested' || $fields == 'request' || $fields == 'inRequest'){
+            return $this->getValidatedData($this->getRequestFieldsNames());
+        } else{
+            $data = [];
+            foreach ($validationRules as $key => $value){
+                if (in_array($key, $fields)){
+                    $data[$key] = $value;
+                }
+            }
+            return request()->validate($data);
+        }
+        
+    }
+    
+    private function getRequestFieldsNames(){
+        $fields = [];
+        foreach(request()->all() as $fieldName => $value){
+            array_push($fields, $fieldName);
+        }
+        return $fields;
     }
     
     public function store(){
@@ -28,7 +51,7 @@ class ClientesController extends Controller
     }
 
     public function update(Cliente $cliente){
-        $cliente->update($this->getValidatedData());
+        $cliente->update($this->getValidatedData('requested'));
         return $cliente;
     }
 
