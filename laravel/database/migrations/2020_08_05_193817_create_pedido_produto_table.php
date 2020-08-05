@@ -16,7 +16,7 @@ class CreatePedidoProdutoTable extends Migration
         Schema::create('pedido_produto', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pedido_id');
-            $table->foreignId('user_id');
+            $table->foreignId('produto_id');
             $table->enum('status', ['Pendente', 'Em preparo', 'Em entrega', 'Entregue', 'Cancelado']);
             $table->timestamps();
         });
