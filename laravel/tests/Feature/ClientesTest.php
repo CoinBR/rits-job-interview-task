@@ -14,7 +14,7 @@ class ClientesTest extends TestCase
     use RefreshDatabase;
 
 
-    function data(){
+    private function data(){
         return [
             'nome' => 'Fulano',
             'email' => 'fulano@cicrano.com',
@@ -23,7 +23,7 @@ class ClientesTest extends TestCase
         ];
     }
 
-    function data2(){
+    private function data2(){
         return [
             'nome' => 'Jesse Pinkman',
             'email' => 'pinkman@waner.tv',
@@ -32,10 +32,14 @@ class ClientesTest extends TestCase
         ];
     }
 
+    private function getBaseEndpoint(){
+        return '/api/clientes';
+    }
+
     public function test_create_cliente(){
         $this->withoutExceptionHandling();
 
-        $this->post('/api/clientes', $this->data());
+        $this->post($this->getBaseEndpoint(), $this->data());
         $cliente = Cliente::first();
 
         foreach($this->data() as $key => $value){
@@ -49,25 +53,25 @@ class ClientesTest extends TestCase
         foreach ($clienteData as $k => $v){
             $incompleteData = $clienteData;
             unset($incompleteData[$k]);
-            $this->post('/api/clientes', $incompleteData)->assertSessionHasErrors($k);
+            $this->post($this->getBaseEndpoint(), $incompleteData)->assertSessionHasErrors($k);
         }
         $this->assertCount(0, Cliente::all());
     }
     
     public function test_valid_email(){
         $wrongData = array_merge($this->data(), ['email' => 'I dont have an email']);
-        $this->post('/api/clientes', $wrongData)->assertSessionHasErrors('email');
+        $this->post($this->getBaseEndpoint(), $wrongData)->assertSessionHasErrors('email');
     }
 
     public function test_unique_fields(){
         $uniqueFields = ['email', 'telefone'];
 
         $legit = $this->data();
-        $this->post('api/clientes', $legit);
+        $this->post($this->getBaseEndpoint(), $legit);
 
         foreach ($uniqueFields as $key => $field){
             $clone = array_merge($this->data2(), [ $field => $legit[$field] ]);
-            $this->post('api/clientes', $clone)->assertSessionHasErrors($field);
+            $this->post($this->getBaseEndpoint(), $clone)->assertSessionHasErrors($field);
         }
 
         $this->assertCount(1, Cliente::all());
@@ -77,10 +81,10 @@ class ClientesTest extends TestCase
         $objsData = [$this->data(), $this->data2()];
     
         foreach($objsData as $k => $objData){
-            $this->post('api/clientes', $objData);
+            $this->post($this->getBaseEndpoint(), $objData);
         }
         foreach($objsData as $k => $objData){
-            $response = $this->get('api/clientes/' . ($k + 1));
+            $response = $this->get($this->getBaseEndpoint() . '/' . ($k + 1));
             $response->assertJson($objData);
         }
     }
@@ -88,10 +92,10 @@ class ClientesTest extends TestCase
     public function test_patch_cliente(){
         $this->withoutExceptionHandling();
 
-        $this->post('api/clientes', $this->data());
+        $this->post($this->getBaseEndpoint(), $this->data());
 
-        $responsePatch = $this->patch('api/clientes/1', $this->data2());
-        $responseGet = $this->get('api/clientes/1');
+        $responsePatch = $this->patch($this->getBaseEndpoint() . '/1', $this->data2());
+        $responseGet = $this->get($this->getBaseEndpoint() . '/1');
         $expected = array_merge(['id' => 1], $this->data2());
 
         $responsePatch->assertJson($expected);
@@ -100,21 +104,20 @@ class ClientesTest extends TestCase
     }
     
     public function test_delete_cliente(){
-        $this->post('api/clientes', $this->data());
+        $this->post($this->getBaseEndpoint(), $this->data());
         $this->assertCount(1, Cliente::all());
 
-        $this->delete('api/clientes/1');
+        $this->delete($this->getBaseEndpoint() . '/1');
         $this->assertCount(0, Cliente::all());
        
-        $this->post('api/clientes', $this->data());
-        $this->post('api/clientes', $this->data2());
+        $this->post($this->getBaseEndpoint(), $this->data());
+        $this->post($this->getBaseEndpoint(), $this->data2());
         $this->assertCount(2, Cliente::all());
 
-        $this->delete('api/clientes/2');
+        $this->delete($this->getBaseEndpoint() . '/2');
         $this->assertCount(1, Cliente::all());
 
-        $this->delete('api/clientes/3');
+        $this->delete($this->getBaseEndpoint() . '/3');
         $this->assertCount(0, Cliente::all());
     }
-    
 }
