@@ -149,7 +149,6 @@ class PedidosTest extends TestCase
     */
     
     public function test_delete_pedido(){
-        $this->withoutExceptionHandling();
 
         $this->post($this->getBaseEndpoint(), $this->data());
         $this->post($this->getBaseEndpoint(), $this->data2());
@@ -158,6 +157,7 @@ class PedidosTest extends TestCase
         $this->get('/api/clientes/2/pedidos')->assertJsonCount(2);
         $this->delete('/api/clientes/2/pedidos/2');
         $this->get('/api/clientes/2/pedidos')->assertJsonCount(1);
+        $this->delete('/api/clientes/1/pedidos/3')->assertSessionHasErrors();
     }
 
     public function test_unique_fields(){
