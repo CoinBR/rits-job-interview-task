@@ -17,7 +17,6 @@ class CreatePedidoProdutoTable extends Migration
             $table->id();
             $table->foreignId('pedido_id');
             $table->foreignId('produto_id');
-            $table->enum('status', ['Pendente', 'Em preparo', 'Em entrega', 'Entregue', 'Cancelado']);
             $table->timestamps();
         });
     }

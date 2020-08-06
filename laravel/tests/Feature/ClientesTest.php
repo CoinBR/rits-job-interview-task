@@ -21,7 +21,7 @@ class ClientesTest extends TestCase
 
     // Entity data and configs. Must be changed for each Entity
 
-    private function data(){
+    public static function data(){
         return [
             'nome' => 'Fulano',
             'email' => 'fulano@cicrano.com',
@@ -30,7 +30,7 @@ class ClientesTest extends TestCase
         ];
     }
 
-    private function data2(){
+    public static function data2(){
         return [
             'nome' => 'Jesse Pinkman',
             'email' => 'pinkman@waner.tv',
