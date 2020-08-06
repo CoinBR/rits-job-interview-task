@@ -18,12 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-$apiCRUDs = [
-    'clientes', 
-    'produtos',
-];
-
 Route::get('/clientes/{cliente}/pedidos', 'PedidosController@indexCliente');
+Route::delete('clientes/{cliente}/pedidos/{pedido}', 'PedidosController@destroy');
 
 Route::get('/clientes', 'ClientesController@index');
 Route::post('/clientes', 'ClientesController@store');
@@ -43,4 +39,3 @@ Route::delete('/produtos/{produto}', 'ProdutosController@destroy');
 Route::get('/pedidos', 'PedidosController@index');
 Route::post('/pedidos', 'PedidosController@store');
 Route::get('/pedidos/{pedido}', 'PedidosController@show');
-Route::delete('/pedidos/{pedido}', 'PedidosController@destroy');

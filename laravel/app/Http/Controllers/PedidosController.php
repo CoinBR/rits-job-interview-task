@@ -92,7 +92,13 @@ class PedidosController extends Controller
     }
 
 
-    public function destroy(Pedido $pedido){
-        $pedido->delete();
+    public function destroy(Cliente $cliente, Pedido $pedido){
+        if ($pedido->cliente()->first()->toArray()['id']
+                != $cliente->toArray()['id']){
+            throw ValidationException::withMessages(
+                ['cliente_id' => 'Esse pedido nao pertence a voce. Apenas o dono do pedido pode deleta-lo']);
+        } else{
+            $pedido->delete();
+        }
     }
 }
