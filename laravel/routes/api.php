@@ -37,6 +37,7 @@ Route::patch('/produtos/{produto}', 'ProdutosController@update');
 Route::put('/produtos/{produto}', 'ProdutosController@update');
 Route::delete('/produtos/{produto}', 'ProdutosController@destroy');
 
+Route::get('/pedidos', 'PedidosController@index');
 Route::post('/pedidos', 'PedidosController@store');
 Route::get('/pedidos/{pedido}', 'PedidosController@show');
 Route::delete('/pedidos/{pedido}', 'PedidosController@destroy');

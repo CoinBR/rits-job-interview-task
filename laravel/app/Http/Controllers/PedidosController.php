@@ -61,6 +61,10 @@ class PedidosController extends Controller
         return $fields;
     }
     
+    public function index(){
+        return Pedido::with('produtos')->get();
+    }
+
     public function store(){
        $data = $this->getValidatedData();
        $pedidoData = $data;

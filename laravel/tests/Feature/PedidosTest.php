@@ -177,4 +177,15 @@ class PedidosTest extends TestCase
         $this->assertCount(1, Pedido::all());
     }
 
+    public function test_list_pedidos(){
+       $this->post($this->getBaseEndpoint(), $this->data());
+       $this->post($this->getBaseEndpoint(), $this->data2());
+    
+       $expected = [
+           array_merge($this->data(), ['id' => 1]),
+           array_merge($this->data2(), ['id' => 2]),
+       ];
+        
+       $this->get($this->getBaseEndpoint())->assertJson($expected);
+    }
 }
