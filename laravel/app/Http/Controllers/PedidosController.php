@@ -65,6 +65,10 @@ class PedidosController extends Controller
         return Pedido::with('produtos')->get();
     }
 
+    public function indexCliente(Cliente $cliente){
+        return $cliente->pedidos()->with('produtos')->get();
+    }
+
     public function store(){
        $data = $this->getValidatedData();
        $pedidoData = $data;

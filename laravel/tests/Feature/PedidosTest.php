@@ -188,4 +188,17 @@ class PedidosTest extends TestCase
         
        $this->get($this->getBaseEndpoint())->assertJson($expected);
     }
+
+    public function test_pedido_index_cliente(){
+        $this->post($this->getBaseEndpoint(), $this->data());
+        $this->post($this->getBaseEndpoint(), $this->data2());
+        $this->post($this->getBaseEndpoint(), $this->data3());
+
+        $response = $this->get('/api/clientes/2/pedidos');
+        $response->assertJsonCount(2);
+        $response->assertJson([
+            array_merge($this->data2(), ['id' => 2]),
+            array_merge($this->data3(), ['id' => 3])
+        ]);
+    }
 }
