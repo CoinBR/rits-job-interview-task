@@ -30,6 +30,7 @@ Route::patch('/clientes/{cliente}', 'ClientesController@update');
 Route::put('/clientes/{cliente}', 'ClientesController@update');
 Route::delete('/clientes/{cliente}', 'ClientesController@destroy');
 
+Route::get('/produtos', 'ProdutosController@index');
 Route::post('/produtos', 'ProdutosController@store');
 Route::get('/produtos/{produto}', 'ProdutosController@show');
 Route::patch('/produtos/{produto}', 'ProdutosController@update');

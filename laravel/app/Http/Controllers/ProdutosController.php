@@ -40,6 +40,10 @@ class ProdutosController extends Controller
         return $fields;
     }
     
+    public function index(){
+        return Produto::all();
+    }
+
     public function store(){
        $newObj = Produto::create($this->getValidatedData()); 
        return $newObj;
