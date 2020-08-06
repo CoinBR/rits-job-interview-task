@@ -21,17 +21,24 @@ class ProdutosTest extends TestCase
 
     // Entity data and configs. Must be changed for each Entity
 
-    private function data(){
+    public static function data(){
         return [
             'nome' => 'Pastel',
             'preco' => 599,
         ];
     }
 
-    private function data2(){
+    public static function data2(){
         return [
             'nome' => 'Espetinho',
             'preco' => 350,
+        ];
+    }
+
+    public static function data3(){
+        return [
+            'nome' => 'Suco',
+            'preco' => 700,
         ];
     }
 
