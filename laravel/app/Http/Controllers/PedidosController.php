@@ -84,7 +84,11 @@ class PedidosController extends Controller
     }
 
     public function update(Pedido $pedido){
-        $pedido->update($this->getValidatedData('requested'));
+        $data = $this->getValidatedData();
+        $pedidoData = $data;
+        unset($pedidoData['produtos']);
+
+        $pedido->update($pedidoData);
         return $pedido;
     }
 

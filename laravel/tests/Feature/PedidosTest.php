@@ -89,7 +89,7 @@ class PedidosTest extends TestCase
     }
 
     private function getUniqueFields(){
-        return ['nome',];
+        return [];
     }
 
 
@@ -131,7 +131,7 @@ class PedidosTest extends TestCase
             $response->assertJson($objData);
         }
     }
-/*
+
     public function test_patch_pedido(){
         $this->withoutExceptionHandling();
 
@@ -142,6 +142,7 @@ class PedidosTest extends TestCase
         $responsePatch = $this->patch($this->getBaseEndpoint() . '/1', $tmp);
         $responseGet = $this->get($this->getBaseEndpoint() . '/1');
         $expected = array_merge(['id' => 1], $this->data(), $tmp);
+        unset($expected['produtos']);
 
         $responsePatch->assertJson($expected);
         $responseGet->assertJson($expected);
@@ -177,15 +178,4 @@ class PedidosTest extends TestCase
         $this->assertCount(1, Pedido::all());
     }
 
-    public function test_all_fields_are_required(){
-        $pedidoData = $this->data();
-
-        foreach ($pedidoData as $k => $v){
-            $incompleteData = $pedidoData;
-            unset($incompleteData[$k]);
-            $this->post($this->getBaseEndpoint(), $incompleteData)->assertSessionHasErrors($k);
-        }
-        $this->assertCount(0, Pedido::all());
-    }
-    */
 }
