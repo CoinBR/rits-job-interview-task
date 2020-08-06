@@ -23,6 +23,7 @@ $apiCRUDs = [
     'produtos',
 ];
 
+Route::get('/clientes', 'ClientesController@index');
 Route::post('/clientes', 'ClientesController@store');
 Route::get('/clientes/{cliente}', 'ClientesController@show');
 Route::patch('/clientes/{cliente}', 'ClientesController@update');

@@ -41,6 +41,10 @@ class ClientesController extends Controller
         return $fields;
     }
     
+    public function index(){
+        return Cliente::all();
+    }
+
     public function store(){
        $newObj = Cliente::create($this->getValidatedData()); 
        return $newObj;
@@ -58,4 +62,5 @@ class ClientesController extends Controller
     public function destroy(Cliente $cliente){
         $cliente->delete();
     }
+
 }
