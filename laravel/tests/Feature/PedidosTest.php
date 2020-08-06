@@ -36,7 +36,7 @@ class PedidosTest extends TestCase
     private function data(){
         $produtos = $this->getRelated('/api/produtos', 3);
         return [
-            'cliente_id' => 1,
+            'cliente_id' => '1',
             'produtos' => [
                 $produtos[0],
                 $produtos[2],
@@ -47,7 +47,7 @@ class PedidosTest extends TestCase
     private function data2(){
         $produtos = $this->getRelated('/api/produtos', 3);
         return [
-            'cliente_id' => 2,
+            'cliente_id' => '2',
             'produtos' => [
                 $produtos[1],
             ]
@@ -57,7 +57,7 @@ class PedidosTest extends TestCase
     private function data3(){
         $produtos = $this->getRelated('/api/produtos', 3);
         return [
-            'cliente_id' => 2,
+            'cliente_id' => '2',
             'produtos' => [
                 $produtos[0],
                 $produtos[1],
@@ -104,7 +104,6 @@ class PedidosTest extends TestCase
         $this->post($this->getBaseEndpoint(), $this->data());
         $pedido = Pedido::first();
 
-
         $this->assertEquals($pedido['id'], 1);
         $this->assertEquals($pedido['cliente_id'], 1);
         $this->assertEquals($pedido['status'], 0);
@@ -118,7 +117,6 @@ class PedidosTest extends TestCase
             $this->assertEquals($pair[0], $pair[1]);
         }
     }
-    /*
 
     public function test_get_pedido(){
         $objsData = [$this->data(), $this->data2()];
@@ -128,10 +126,12 @@ class PedidosTest extends TestCase
         }
         foreach($objsData as $k => $objData){
             $response = $this->get($this->getBaseEndpoint() . '/' . ($k + 1));
+            #dd(get_class_methods($response));
+            #dd($response->json());
             $response->assertJson($objData);
         }
     }
-
+/*
     public function test_patch_pedido(){
         $this->withoutExceptionHandling();
 

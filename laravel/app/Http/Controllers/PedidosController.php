@@ -66,8 +66,6 @@ class PedidosController extends Controller
        $pedidoData = $data;
        unset($pedidoData['produtos']);
 
-
-
        $newObj = Pedido::create($pedidoData); 
 
        $objsIds = [];
@@ -80,7 +78,9 @@ class PedidosController extends Controller
     }
 
     public function show(Pedido $pedido){
-        return $pedido;
+        return Pedido::where('id', '=', $pedido['id'])
+            ->with('produtos')
+            ->first();
     }
 
     public function update(Pedido $pedido){
