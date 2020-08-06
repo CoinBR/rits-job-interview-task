@@ -126,12 +126,10 @@ class PedidosTest extends TestCase
         }
         foreach($objsData as $k => $objData){
             $response = $this->get($this->getBaseEndpoint() . '/' . ($k + 1));
-            #dd(get_class_methods($response));
-            #dd($response->json());
             $response->assertJson($objData);
         }
     }
-
+/*
     public function test_patch_pedido(){
         $this->withoutExceptionHandling();
 
@@ -148,6 +146,7 @@ class PedidosTest extends TestCase
         $responseGet->assertJson($expected);
         $this->assertCount(1, Pedido::all());
     }
+    */
     
     public function test_delete_pedido(){
         $this->post($this->getBaseEndpoint(), $this->data());

@@ -74,7 +74,7 @@ class PedidosController extends Controller
        }
        $newObj->produtos()->sync($objsIds);
 
-       return $newObj;
+       return $this->show($newObj);
     }
 
     public function show(Pedido $pedido){
@@ -83,14 +83,6 @@ class PedidosController extends Controller
             ->first();
     }
 
-    public function update(Pedido $pedido){
-        $data = $this->getValidatedData();
-        $pedidoData = $data;
-        unset($pedidoData['produtos']);
-
-        $pedido->update($pedidoData);
-        return $pedido;
-    }
 
     public function destroy(Pedido $pedido){
         $pedido->delete();
