@@ -45,12 +45,11 @@ class LanchoneteSeeder extends Seeder
             'preco' => '550',
         ]);
 
-
         ########
-        
+
         Pedido::create(['cliente_id' => 1, 'status' => 0])->produtos()->sync(1);
 
-        Pedido::create(['cliente_id' => 2, 'status' => 0])->produtos()->sync(1, 2);
-        Pedido::create(['cliente_id' => 2, 'status' => 0])->produtos()->sync(1, 2, 3);
+        Pedido::create(['cliente_id' => 2, 'status' => 0])->produtos()->sync([1, 2]);
+        Pedido::create(['cliente_id' => 2, 'status' => 0])->produtos()->sync([1, 2, 3]);
     }
 }
