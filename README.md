@@ -18,4 +18,5 @@ Desafio da rits.dev para vaga de backend developer.
 - Enviar requisições para as rotas que estão no arquivo de rotas laravel/routes/api.php
 
 ## Executar os tests que escrevi:
+- docker-compose run laravel php artisan config:cache
 - docker-compose run laravel php artisan test
